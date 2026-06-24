@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id String @id @default(uuid())
+  nome String
+  email String @unique
+  senha String
+  avatar String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userDlc UserDlc[]
+  links Link[]
+  avaliacoes Avaliacao[]
+}
+
+model Dlc {
+  id String @id @default(uuid())
+  nome String
+  desc String
+  capa String
+  demo1 String?
+  demo2 String?
+  demo3 String?
+  downloads Int
+  donwloadUrl String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userDlc UserDlc[]
+}
+
+model UserDlc {
+  id String @id @default(uuid())
+  userId String
+  dlcId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+  dlc Dlc @relation(fields: [dlcId], references: [id])
+}
+
+model Link {
+  id String @id @default(uuid())
+  userId String
+  name String
+  url String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Comentario {
+  id String @id @default(uuid())
+  userId String
+  postId String?
+  comentId String?
+
+  parentCommentId String?
+  parentComment   Comentario?  @relation("CommentReplies", fields: [parentCommentId], references: [id])
+  respostas         Comentario[] @relation("CommentReplies")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Avaliacao {
+  id String @id @default(uuid())
+  userId String
+  nota Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId], references: [id])
+}

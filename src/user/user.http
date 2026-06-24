@@ -1,0 +1,9 @@
+### list users
+POST http://localhost:3000/user
+Content-Type: application/json
+
+{
+    "nome": "siricuticos",
+    "email": "deivyson",
+    "senha": "123456"
+}
