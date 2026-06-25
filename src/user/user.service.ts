@@ -6,7 +6,7 @@ import { prisma } from '../../lib/prisma';
 @Injectable()
 export class UserService {
   async create(createUserDto: CreateUserDto) {
-    const user = await prisma.user.create({ data: createUserDto });
+    await prisma.user.create({ data: createUserDto });
     return 'Usuário criado com sucesso!';
   }
 
@@ -25,8 +25,8 @@ export class UserService {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: string) {
-    prisma.user.delete({ where: { id } });
+  async remove(id: string) {
+    await prisma.user.delete({ where: { id } });
     return `Usuário #${id} deletado com sucesso!`;
   }
 }
